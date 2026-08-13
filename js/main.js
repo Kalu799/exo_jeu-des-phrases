@@ -21,7 +21,7 @@ const phrase = {
 
 // récup données csv + traitement
 const getData = async () => {
-  await fetch('jeu-des-phrases.csv')
+  await fetch('./jeu-des-phrases.csv')
     // on récup les données du csv et on en fait un texte
     .then(response => response.text())
     .then(resp => {
