@@ -36,7 +36,7 @@ const getData = async () => {
         // on retire la première ligne qui contient les titres des colonnes
         .slice(1);
 
-      //console.log(lignes)
+      console.log(lignes)
 
       lignes.forEach(ligne => {
         // pour chaque lignes, on dit que le premier "objet" est "sujet", le deuxième est "verbe" et le troisième est "complement", en séparant avec les ","
