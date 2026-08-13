@@ -1,3 +1,5 @@
+const $listePhrases = document.querySelector('#listePhrases')
+
 // const qui contiendra les données
 const data = {
   sujet: [],
@@ -95,10 +97,20 @@ const genererPhrase = async () => {
   console.log(phrase)
 }
 
+// fct qui ajoute la phrase générée à l'html
+const affichagePhrase = () => {
+  // créer le template de la phrase
+  let template = `<li>${phrase.sujet} ${phrase.verbe} ${phrase.complement}</li>`
+  
+  // ajoute le template dans l'html
+  $listePhrases.innerHTML += template
+}
+
 // fct init qui lance les autres
 const init = async () => {
   await getData()
   await genererPhrase()
+  await affichagePhrase()
 }
 
 init()
