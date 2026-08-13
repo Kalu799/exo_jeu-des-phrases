@@ -103,7 +103,7 @@ const getRandomSeq = () => {
   // si pas doublon -> on l'ajoute à la liste et return true pour sortir de la boucle
   allSeq.push([...randomSeq])
 
-  console.log("Nouvelle séquence valide :", randomSeq)
+  //console.log("Nouvelle séquence valide :", randomSeq)
 
   // on nettoie les var
   nbre1 = null
