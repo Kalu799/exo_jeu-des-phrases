@@ -1,6 +1,7 @@
 const $listePhrases = document.querySelector('#listePhrases')
 const $newPhraseBtn = document.querySelector('#newPhraseBtn')
 
+
 // const qui contiendra les données
 const data = {
   sujet: [],
@@ -12,6 +13,8 @@ let nbreSujet = null
 let nbreVerbe = null
 let nbreComplement = null
 
+let nbrePhrase = null
+
 const randomSeq = []
 
 const allSeq = []
@@ -21,6 +24,7 @@ const phrase = {
   verbe: [],
   complement: []
 };
+
 
 // récup données csv + traitement
 const getData = async () => {
@@ -63,18 +67,19 @@ const getData = async () => {
       });
 }
 
+
 // génère un nbre aléatoire compris entre 0 et max
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
 // génère un séquence aléatoire de 3 nombres
-const getRandomSeq = async () => {
+const getRandomSeq = () => {
 
   // génère un nbre aléatoire en fonction du nbre max de sujet, verbe et complément
-  let nbre1 = await getRandomInt(nbreSujet)
-  let nbre2 = await getRandomInt(nbreVerbe)
-  let nbre3 = await getRandomInt(nbreComplement)
+  let nbre1 = getRandomInt(nbreSujet)
+  let nbre2 = getRandomInt(nbreVerbe)
+  let nbre3 = getRandomInt(nbreComplement)
 
   // on met ses nombres dans un array
   randomSeq.push(nbre1)
@@ -82,47 +87,82 @@ const getRandomSeq = async () => {
   randomSeq.push(nbre3)
   //console.log(randomSeq)
 
+  // check si on a un doublon
+  const existe = allSeq.some(seq =>
+    JSON.stringify(seq) === JSON.stringify(randomSeq)
+  )
+
+  // si doublon -> return false pour continuer la boucle
+  if (existe) {
+    console.log("Séquence existante → on recommence")
+    // reset pour prochaine génération
+    randomSeq.length = 0
+    return false
+  }
+
+  // si pas doublon -> on l'ajoute à la liste et return true pour sortir de la boucle
+  allSeq.push([...randomSeq])
+
+  console.log("Nouvelle séquence valide :", randomSeq)
+
   // on nettoie les var
   nbre1 = null
   nbre2 = null
   nbre3 = null
 
-  
+  return true
+
+
+ 
 }
 
+
 // fct qui génère une phrase en fonction de la séquence donnée
-const genererPhrase = async () => {
-  await getRandomSeq()
+const genererPhrase = () => {
+
+  let generationReussie = false
+
+  // boucle jusqu'à avoir une suite de nombre qui n'est pas un doublon
+  while (!generationReussie) {
+    generationReussie = getRandomSeq()
+  }
+  
+  //console.log(randomSeq)
+  // récup dans data pour créer la phrase
   phrase.sujet = data.sujet[randomSeq[0]]
   phrase.verbe = data.verbe[randomSeq[1]]
   phrase.complement = data.complement[randomSeq[2]]
 
   //console.log(phrase)
+  //console.log(allSeq)
 
-  // on sauvegarde la séquence
-  allSeq.push([...randomSeq])
-  console.log(allSeq)
   // reset pour prochaine génération
   randomSeq.length = 0
   //console.log(randomSeq)
 
+  // on lance l'ajout à l'affichage
   affichagePhrase()
 }
+
 
 // fct qui ajoute la phrase générée à l'html
 const affichagePhrase = () => {
   // créer le template de la phrase
-  let template = `<li>${phrase.sujet} ${phrase.verbe} ${phrase.complement}</li>`
+  let template = `<li>${phrase.sujet} ${phrase.verbe} ${phrase.complement}.</li>`
   
   // ajoute le template dans l'html
   $listePhrases.innerHTML += template
+
+  nbrePhrase + 1
 }
+
 
 // fct init qui lance les autres
 const init = async () => {
   await getData()
   // génère automatiquement la première phrase
   await genererPhrase()
+
   // gère le click pour ajouter de nouvelles phrases
   $newPhraseBtn.addEventListener('click', genererPhrase)
 }
