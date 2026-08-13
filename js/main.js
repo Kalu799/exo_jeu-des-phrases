@@ -13,8 +13,6 @@ let nbreSujet = null
 let nbreVerbe = null
 let nbreComplement = null
 
-let nbrePhrase = null
-
 const randomSeq = []
 
 const allSeq = []
@@ -152,8 +150,6 @@ const affichagePhrase = () => {
   
   // ajoute le template dans l'html
   $listePhrases.innerHTML += template
-
-  nbrePhrase + 1
 }
 
 
