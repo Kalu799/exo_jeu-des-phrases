@@ -1,0 +1,10 @@
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+/* RESET */
+
+h1 {
+  font-size: unset;
+  font-weight: unset;
+}
