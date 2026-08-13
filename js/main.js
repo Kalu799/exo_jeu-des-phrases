@@ -1,4 +1,5 @@
 const $listePhrases = document.querySelector('#listePhrases')
+const $newPhraseBtn = document.querySelector('#newPhraseBtn')
 
 // const qui contiendra les données
 const data = {
@@ -12,6 +13,8 @@ let nbreVerbe = null
 let nbreComplement = null
 
 const randomSeq = []
+
+const allSeq = []
 
 const phrase = {
   sujet: [],
@@ -77,13 +80,13 @@ const getRandomSeq = async () => {
   randomSeq.push(nbre1)
   randomSeq.push(nbre2)
   randomSeq.push(nbre3)
+  //console.log(randomSeq)
 
   // on nettoie les var
   nbre1 = null
   nbre2 = null
   nbre3 = null
 
-  console.log(randomSeq)
   
 }
 
@@ -94,7 +97,16 @@ const genererPhrase = async () => {
   phrase.verbe = data.verbe[randomSeq[1]]
   phrase.complement = data.complement[randomSeq[2]]
 
-  console.log(phrase)
+  //console.log(phrase)
+
+  // on sauvegarde la séquence
+  allSeq.push([...randomSeq])
+  console.log(allSeq)
+  // reset pour prochaine génération
+  randomSeq.length = 0
+  //console.log(randomSeq)
+
+  affichagePhrase()
 }
 
 // fct qui ajoute la phrase générée à l'html
@@ -109,8 +121,10 @@ const affichagePhrase = () => {
 // fct init qui lance les autres
 const init = async () => {
   await getData()
+  // génère automatiquement la première phrase
   await genererPhrase()
-  await affichagePhrase()
+  // gère le click pour ajouter de nouvelles phrases
+  $newPhraseBtn.addEventListener('click', genererPhrase)
 }
 
 init()
