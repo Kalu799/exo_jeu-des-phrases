@@ -1,3 +1,4 @@
+// DOM
 const $listePhrases = document.querySelector('#listePhrases')
 const $newPhraseBtn = document.querySelector('#newPhraseBtn')
 
@@ -12,11 +13,11 @@ const data = {
 let nbreSujet = null
 let nbreVerbe = null
 let nbreComplement = null
-
+// var pour la séquence aléatoire générée
 const randomSeq = []
-
+// var pour toutes les séquences générées pour check les doublons
 const allSeq = []
-
+// var pour construire la phrase à affichée
 const phrase = {
   sujet: [],
   verbe: [],
@@ -100,6 +101,9 @@ const getRandomSeq = () => {
 
   // si pas doublon -> on l'ajoute à la liste et return true pour sortir de la boucle
   allSeq.push([...randomSeq])
+  
+  // on save les séquences dans le localStorage
+  syncSeq()
 
   //console.log("Nouvelle séquence valide :", randomSeq)
 
@@ -110,8 +114,6 @@ const getRandomSeq = () => {
 
   return true
 
-
- 
 }
 
 
@@ -150,6 +152,18 @@ const affichagePhrase = () => {
   
   // ajoute le template dans l'html
   $listePhrases.innerHTML += template
+}
+
+
+// fct pour mettre en localStorage
+const syncSeq = () => {
+  // save allSeq dans le localStorage
+  localStorage.sequences = JSON.stringify(allSeq)
+
+  // si localStorage vide : on supp l'entrée
+  if(JSON.parse(localStorage.sequences).length == 0) {
+    localStorage.removeItem('sequences')
+  }
 }
 
 
